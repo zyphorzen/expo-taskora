@@ -1,18 +1,33 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { defaultConfig } from "@tamagui/config/v5";
+import { createTamagui, TamaguiProvider } from "@tamagui/core";
+import { Stack } from "expo-router";
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+const config = createTamagui(defaultConfig);
+type Conf = typeof config;
 
-SplashScreen.preventAutoHideAsync();
+declare module "@tamagui/core" {
+  interface TamaguiCustomConfig extends Conf {}
+}
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <TamaguiProvider config={config} defaultTheme="dark">
+      {/* <Tabs
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Tabs.Screen name="index" />
+        <Tabs.Screen name="task" />
+        <Tabs.Screen name="community" />
+        <Tabs.Screen name="profile" />
+      </Tabs> */}
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: "none",
+        }}
+      />
+    </TamaguiProvider>
   );
 }
